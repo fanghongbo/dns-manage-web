@@ -456,7 +456,7 @@ export function useUpdateFormSchema(): VbenFormSchema[] {
       label: $t('dns.record.weight'),
       rules: 'required',
       componentProps: {
-        min: 0,
+        min: 1,
         max: 100,
         style: { width: '100%' },
       },
