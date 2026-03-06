@@ -1,0 +1,74 @@
+{
+  "title": "System Management",
+  "userGroup": {
+    "name": "User Group",
+    "title": "User Group Management",
+    "list": "User Group List",
+    "userGroupName": "User Group Name",
+    "status": "Status",
+    "createdTime": "Creation Time",
+    "users": "Users",
+    "roles": "Roles",
+    "remark": "Remark",
+    "operation": "Operation",
+    "parentUserGroup": "Parent User Group",
+    "userCount": "User Count"
+  },
+  "user": {
+    "title": "User Management",
+    "list": "User List",
+    "name": "User",
+    "userName": "User Name",
+    "nickname": "Nickname",
+    "roles": "Roles",
+    "groups": "Groups",
+    "id": "User ID",
+    "status": "Status",
+    "remark": "Remark",
+    "createdTime": "Creation Time",
+    "operation": "Operation"
+  },
+  "role": {
+    "title": "Role Management",
+    "list": "Role List",
+    "name": "Role",
+    "roleName": "Role Name",
+    "id": "Role ID",
+    "status": "Status",
+    "remark": "Remark",
+    "createdTime": "Creation Time",
+    "operation": "Operation",
+    "permissions": "Permissions",
+    "setPermissions": "Permissions"
+  },
+  "userNotification": {
+    "title": "Notification Management",
+    "list": "Notification List",
+    "name": "Title",
+    "id": "User Notification ID",
+    "status": "Status",
+    "statusOptions": {
+      "0": "UnRead",
+      "1": "Read"
+    },
+    "content": "Content",
+    "setRead": "Set Read",
+    "setUnread": "Set Unread",
+    "batchSetRead": "Set Read",
+    "batchSetUnread": "Set Unread",
+    "batchDelete": "Batch Delete",
+    "createdTime": "Notification Time",
+    "operation": "Operation"
+  },
+  "audit": {
+    "title": "Operation Audit",
+    "list": "Audit List",
+    "name": "Operation",
+    "operationName": "Operation Name",
+    "id": "Operation ID",
+    "status": "Status",
+    "remark": "Remark",
+    "createTime": "Creation Time",
+    "operation": "Operation"
+  }
+}

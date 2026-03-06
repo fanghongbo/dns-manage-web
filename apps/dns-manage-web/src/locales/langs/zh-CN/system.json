@@ -1,0 +1,74 @@
+{
+  "title": "系统管理",
+  "userGroup": {
+    "list": "用户组列表",
+    "createdTime": "创建时间",
+    "userGroupName": "用户组名称",
+    "name": "用户组",
+    "operation": "操作",
+    "users": "用户",
+    "roles": "角色",
+    "parentUserGroup": "父用户组",
+    "remark": "备注",
+    "status": "状态",
+    "title": "用户组管理",
+    "userCount": "用户数"
+  },
+  "user": {
+    "title": "用户管理",
+    "list": "用户列表",
+    "name": "用户",
+    "userName": "用户名",
+    "nickname": "姓名",
+    "roles": "角色",
+    "groups": "用户组",
+    "id": "用户ID",
+    "status": "状态",
+    "remark": "备注",
+    "createdTime": "创建时间",
+    "operation": "操作"
+  },
+  "role": {
+    "title": "角色管理",
+    "list": "角色列表",
+    "name": "角色",
+    "roleName": "角色名称",
+    "id": "角色ID",
+    "status": "状态",
+    "remark": "备注",
+    "createdTime": "创建时间",
+    "operation": "操作",
+    "permissions": "权限",
+    "setPermissions": "授权"
+  },
+  "userNotification": {
+    "title": "通知管理",
+    "list": "通知列表",
+    "name": "标题",
+    "id": "通知ID",
+    "status": "状态",
+    "statusOptions": {
+      "0": "未读",
+      "1": "已读"
+    },
+    "content": "内容",
+    "setRead": "设为已读",
+    "setUnread": "设为未读",
+    "batchSetRead": "设为已读",
+    "batchSetUnread": "设为未读",
+    "batchDelete": "批量删除",
+    "createdTime": "通知时间",
+    "operation": "操作"
+  },
+  "audit": {
+    "title": "操作审计",
+    "list": "审计列表",
+    "name": "操作",
+    "operationName": "操作名称",
+    "id": "操作ID",
+    "status": "状态",
+    "remark": "备注",
+    "createTime": "创建时间",
+    "operation": "操作"
+  }
+}

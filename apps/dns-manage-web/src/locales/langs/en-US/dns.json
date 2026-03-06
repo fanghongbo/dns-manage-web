@@ -1,0 +1,221 @@
+{
+  "title": "DNS Management",
+  "domain": {
+    "title": "Domain Management",
+    "list": "Domain List",
+    "name": "Domain",
+    "domainName": "Domain Name",
+    "domainNameInvalid": "Please enter a valid second-level domain, e.g. jlc.com",
+    "id": "Domain ID",
+    "providers": "Providers",
+    "recordCount": "Record Count",
+    "status": "Status",
+    "remark": "Remark",
+    "createdTime": "Creation Time",
+    "operation": "Operation",
+    "record": "DNS Records",
+    "analysis": "Diff Analysis"
+  },
+  "record": {
+    "title": "Record Management",
+    "list": "Record List",
+    "name": "Record",
+    "host": "Host Record",
+    "hostInvalid": "Host record can only contain letters, numbers, hyphens, underscores, dots, asterisks, {'@'} symbol, and Chinese characters",
+    "line": "Line",
+    "loadStrategy": "Load Strategy",
+    "ttl": "TTL",
+    "priority": "Priority",
+    "type": "Type",
+    "value": "Record Value",
+    "valueRequired": "Record value cannot be empty",
+    "valueInvalid": "Record value format is invalid",
+    "valueInvalidIp": "A record value must be a valid IP address",
+    "valueInvalidIpv6": "AAAA record value must be a valid IPv6 address",
+    "valueInvalidDomain": "CNAME record value must be a valid domain name",
+    "valueInvalidDomainNs": "NS record value must be a valid domain name",
+    "valueInvalidDomainMx": "MX record value must be a valid domain name",
+    "valueInvalidTxt": "TXT record value can only contain letters, numbers, *?-_~=:;.{'@'}{'+'}{'^'}/!\", and the length cannot exceed 512 characters",
+    "status": "Status",
+    "weight": "Weight",
+    "remark": "Remark",
+    "createdTime": "Creation Time",
+    "updatedTime": "Update Time",
+    "operation": "Operation",
+    "statusOptions": {
+      "0": "Disabled",
+      "1": "Enabled"
+    },
+    "typeOptions": {
+      "A": "A",
+      "AAAA": "AAAA",
+      "CNAME": "CNAME",
+      "TXT": "TXT",
+      "NS": "NS",
+      "MX": "MX"
+    },
+    "lineOptions": {
+      "default": "Default",
+      "telecom": "Telecom",
+      "unicom": "Unicom",
+      "mobile": "Mobile",
+      "edu": "Edu",
+      "internal": "Internal",
+      "oversea": "Oversea"
+    },
+    "loadStrategyOptions": {
+      "rr": "Round Robin",
+      "wrr": "Weighted"
+    },
+    "ttlOptions": {
+      "60": "600 seconds",
+      "300": "5 minutes",
+      "600": "10 minutes",
+      "1800": "30 minutes",
+      "3600": "1 hour",
+      "7200": "2 hours",
+      "14400": "4 hours",
+      "28800": "8 hours",
+      "57600": "16 hours",
+      "86400": "1 day"
+    },
+    "check": "Check Effect",
+    "test": "Test Ping",
+    "checkStatus": {
+      "title": "DNS Record Status Check",
+      "consistent": "Consistent",
+      "inconsistent": "Inconsistent",
+      "noData": "No Data",
+      "loading": "Checking..."
+    }
+  },
+  "provider": {
+    "title": "Provider Management",
+    "list": "Provider List",
+    "name": "Provider",
+    "providerName": "Provider Name",
+    "providerType": "Provider Type",
+    "providerTypeOptions": {
+      "aliyun": "Aliyun",
+      "dnspod": "DNSPod",
+      "aws": "AWS"
+    },
+    "apiKey": "API Key",
+    "apiSecret": "API Secret",
+    "id": "Provider ID",
+    "status": "Status",
+    "remark": "Remark",
+    "createdTime": "Creation Time",
+    "operation": "Operation"
+  },
+  "task": {
+    "title": "Task Management",
+    "list": "Task List",
+    "name": "Task",
+    "startTime": "Start Time",
+    "finishTime": "Finish Time",
+    "durationMs": "Duration",
+    "taskName": "Task Name",
+    "taskType": "Task Type",
+    "viewDetail": "View Detail",
+    "taskTypeOptions": {
+      "dns_record_push": "Push DNS Record",
+      "dns_record_pull": "Pull DNS Record",
+      "dns_record_create": "Create DNS Record",
+      "dns_record_update": "Update DNS Record",
+      "dns_record_delete": "Delete DNS Record",
+      "dns_record_enable": "Enable DNS Record",
+      "dns_record_disable": "Disable DNS Record",
+      "dns_record_batch_enable": "Batch Enable DNS Record",
+      "dns_record_batch_disable": "Batch Disable DNS Record",
+      "dns_record_batch_delete": "Batch Delete DNS Record"
+    },
+    "statusOptions": {
+      "0": "Pending",
+      "1": "Processing",
+      "2": "Success",
+      "3": "Failed",
+      "4": "Canceled"
+    },
+    "id": "Task ID",
+    "status": "Task Status",
+    "domainName": "Domain Name",
+    "remark": "Remark",
+    "detail": "Task Detail",
+    "record": {
+      "list": "Task Record List",
+      "title": "Task Record",
+      "name": "Task Record",
+      "retry": "Retry",
+      "executeTimes": "Execute Times",
+      "maxRetryTimes": "Max Retry Times",
+      "nextExecuteTime": "Next Execute Time",
+      "startTime": "Start Time",
+      "finishTime": "Finish Time",
+      "durationMs": "Duration",
+      "errorMsg": "Error Message",
+      "statusOptions": {
+        "0": "Pending",
+        "1": "Processing",
+        "2": "Success",
+        "3": "Failed",
+        "4": "Canceled",
+        "5": "Retry Wait"
+      },
+      "status": "Task Status",
+      "createdTime": "Creation Time",
+      "updatedTime": "Update Time",
+      "operator": "Operator",
+      "operation": "Operation"
+    },
+    "createdTime": "Creation Time",
+    "operator": "Operator",
+    "operation": "Operation"
+  },
+  "log": {
+    "title": "Operation Log",
+    "list": "Operation Log List",
+    "name": "Operation Log",
+    "logName": "Operation Name",
+    "logType": "Operation Type",
+    "newRecord": "New",
+    "oldRecord": "Old",
+    "actionType": "Operation Type",
+    "operationTime": "Operation Time",
+    "actionTypeOptions": {
+      "dns_record_push": "Push",
+      "dns_record_pull": "Pull",
+      "dns_record_create": "Create",
+      "dns_record_update": "Update",
+      "dns_record_delete": "Delete",
+      "dns_record_enable": "Enable",
+      "dns_record_disable": "Disable",
+      "dns_record_batch_enable": "Batch Enable",
+      "dns_record_batch_disable": "Batch Disable",
+      "dns_record_batch_delete": "Batch Delete"
+    }
+  },
+  "analysis": {
+    "title": "Analysis Report",
+    "list": "Report List",
+    "name": "Analysis Report",
+    "status": "Status",
+    "statusOptions": {
+      "0": "Success",
+      "1": "Failed"
+    },
+    "analysisTime": "Analysis Time",
+    "providers": "Providers",
+    "diffCount": "Diff Count",
+    "local": "Local",
+    "diff0": "{sourceName} Exist / {targetName} Not Exist Records",
+    "diff1": "{sourceName} Not Exist / {targetName} Exist Records",
+    "diff2": "{sourceName} / {targetName} Different Records",
+    "record": {
+      "title": "Analysis Record",
+      "list": "Analysis Record List",
+      "name": "Analysis Record",
+      "emptyText": "No Data"
+    }
+  }
+}

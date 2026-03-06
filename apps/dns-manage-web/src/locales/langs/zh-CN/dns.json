@@ -1,0 +1,221 @@
+{
+  "title": "DNS管理",
+  "domain": {
+    "title": "域名管理",
+    "list": "域名列表",
+    "name": "域名",
+    "domainName": "域名名称",
+    "domainNameInvalid": "请输入有效的二级域名，如 sz-jlc.com",
+    "id": "域名ID",
+    "providers": "服务商",
+    "recordCount": "记录数",
+    "status": "状态",
+    "remark": "备注",
+    "createdTime": "创建时间",
+    "operation": "操作",
+    "record": "域名解析",
+    "analysis": "差异分析"
+  },
+  "record": {
+    "title": "记录管理",
+    "list": "记录列表",
+    "name": "记录",
+    "host": "主机记录",
+    "hostInvalid": "主机记录只能包含字母、数字、连字符、下划线、点号、星号、{'@'}符号和中文汉字",
+    "line": "线路",
+    "loadStrategy": "负载策略",
+    "ttl": "TTL",
+    "priority": "优先级",
+    "createdTime": "创建时间",
+    "updatedTime": "更新时间",
+    "operation": "操作",
+    "type": "类型",
+    "status": "状态",
+    "value": "记录值",
+    "valueRequired": "记录值不能为空",
+    "valueInvalid": "记录值格式不正确",
+    "valueInvalidIp": "A记录的记录值必须是有效的IP地址",
+    "valueInvalidIpv6": "AAAA记录的记录值必须是有效的IPv6地址",
+    "valueInvalidDomain": "CNAME记录的记录值必须是有效的域名",
+    "valueInvalidDomainNs": "NS记录的记录值必须是有效的域名",
+    "valueInvalidDomainMx": "MX记录的记录值必须是有效的域名",
+    "valueInvalidTxt": "TXT记录的记录值只能包含字母、数字、*?-_~=:;.{'@'}{'+'}{'^'}/!\"，长度不能超过512个字符",
+    "weight": "权重",
+    "remark": "备注",
+    "statusOptions": {
+      "0": "禁用",
+      "1": "启用"
+    },
+    "typeOptions": {
+      "A": "A",
+      "AAAA": "AAAA",
+      "CNAME": "CNAME",
+      "TXT": "TXT",
+      "NS": "NS",
+      "MX": "MX"
+    },
+    "lineOptions": {
+      "default": "默认",
+      "telecom": "电信",
+      "unicom": "联通",
+      "mobile": "移动",
+      "edu": "教育网",
+      "internal": "国内",
+      "oversea": "海外"
+    },
+    "loadStrategyOptions": {
+      "rr": "轮询",
+      "wrr": "权重"
+    },
+    "ttlOptions": {
+      "60": "1分钟",
+      "300": "5分钟",
+      "600": "10分钟",
+      "1800": "30分钟",
+      "3600": "1小时",
+      "7200": "2小时",
+      "14400": "4小时",
+      "28800": "8小时",
+      "57600": "16小时",
+      "86400": "1天"
+    },
+    "check": "生效检测",
+    "test": "拨测",
+    "checkStatus": {
+      "title": "DNS记录状态检查",
+      "consistent": "一致",
+      "inconsistent": "不一致",
+      "noData": "暂无数据",
+      "loading": "检查中..."
+    }
+  },
+  "provider": {
+    "title": "服务商管理",
+    "list": "服务商列表",
+    "name": "服务商",
+    "providerName": "服务商名称",
+    "providerType": "服务商类型",
+    "providerTypeOptions": {
+      "aliyun": "阿里云",
+      "dnspod": "DNSPod",
+      "aws": "亚马逊"
+    },
+    "apiKey": "API Key",
+    "apiSecret": "API Secret",
+    "id": "服务商ID",
+    "status": "状态",
+    "remark": "备注",
+    "createdTime": "创建时间",
+    "operation": "操作"
+  },
+  "task": {
+    "title": "任务管理",
+    "list": "任务列表",
+    "name": "任务",
+    "startTime": "开始时间",
+    "finishTime": "结束时间",
+    "durationMs": "执行时长",
+    "taskName": "任务名称",
+    "taskType": "任务类型",
+    "viewDetail": "详情",
+    "taskTypeOptions": {
+      "dns_record_push": "推送DNS记录",
+      "dns_record_pull": "拉取DNS记录",
+      "dns_record_create": "创建DNS记录",
+      "dns_record_update": "更新DNS记录",
+      "dns_record_delete": "删除DNS记录",
+      "dns_record_enable": "启用DNS记录",
+      "dns_record_disable": "禁用DNS记录",
+      "dns_record_batch_enable": "批量启用DNS记录",
+      "dns_record_batch_disable": "批量禁用DNS记录",
+      "dns_record_batch_delete": "批量删除DNS记录"
+    },
+    "statusOptions": {
+      "0": "待处理",
+      "1": "处理中",
+      "2": "成功",
+      "3": "失败",
+      "4": "已取消"
+    },
+    "id": "任务ID",
+    "status": "任务状态",
+    "domainName": "域名",
+    "remark": "备注",
+    "detail": "任务详情",
+    "record": {
+      "list": "任务记录列表",
+      "title": "任务记录",
+      "name": "任务记录",
+      "retry": "重试",
+      "executeTimes": "执行次数",
+      "maxRetryTimes": "最大重试次数",
+      "nextExecuteTime": "下次执行时间",
+      "startTime": "开始时间",
+      "finishTime": "结束时间",
+      "durationMs": "执行时长",
+      "errorMsg": "错误信息",
+      "statusOptions": {
+        "0": "待处理",
+        "1": "处理中",
+        "2": "成功",
+        "3": "失败",
+        "4": "已取消",
+        "5": "重试中"
+      },
+      "status": "任务状态",
+      "createdTime": "创建时间",
+      "updatedTime": "更新时间",
+      "operator": "操作人",
+      "operation": "操作"
+    },
+    "operator": "操作人",
+    "createdTime": "创建时间",
+    "operation": "操作"
+  },
+  "log": {
+    "title": "操作日志",
+    "list": "操作日志列表",
+    "name": "操作日志",
+    "logName": "操作名称",
+    "logType": "操作类型",
+    "newRecord": "新",
+    "oldRecord": "旧",
+    "actionType": "操作类型",
+    "operationTime": "操作时间",
+    "actionTypeOptions": {
+      "dns_record_push": "推送",
+      "dns_record_pull": "拉取",
+      "dns_record_create": "创建",
+      "dns_record_update": "更新",
+      "dns_record_delete": "删除",
+      "dns_record_enable": "启用",
+      "dns_record_disable": "禁用",
+      "dns_record_batch_enable": "启用",
+      "dns_record_batch_disable": "禁用",
+      "dns_record_batch_delete": "删除"
+    }
+  },
+  "analysis": {
+    "title": "分析报表",
+    "list": "报表列表",
+    "name": "分析报表",
+    "status": "状态",
+    "statusOptions": {
+      "0": "成功",
+      "1": "失败"
+    },
+    "analysisTime": "分析时间",
+    "providers": "服务商",
+    "diffCount": "差异数",
+    "local": "本地",
+    "diff0": "{sourceName}存在 / {targetName}不存在的记录",
+    "diff1": "{sourceName}不存在 / {targetName}存在的记录",
+    "diff2": "{sourceName} / {targetName} 存在差异的记录",
+    "record": {
+      "title": "分析记录",
+      "list": "分析记录列表",
+      "name": "分析记录",
+      "emptyText": "暂无数据"
+    }
+  }
+}
