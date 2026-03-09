@@ -11,18 +11,21 @@ import { computed, nextTick, onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
-import { Plus } from '@vben/icons';
+import { IconifyIcon, Plus } from '@vben/icons';
 
-import { Button, message, Modal, Space, Table } from 'ant-design-vue';
+import { Button, message, Modal, Select, Space, Table } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { getDnsDomainInfo } from '#/api/dns/domain';
+import { getDnsProviders } from '#/api/dns/provider';
 import {
   batchDnsRecords,
   checkDnsRecord,
   deleteDnsRecord,
   getDnsRecordList,
+  pullDnsRecords,
+  pushDnsRecords,
   updateDnsRecordStatus,
 } from '#/api/dns/record';
 import { $t } from '#/locales';
@@ -339,6 +342,101 @@ function onCreate() {
   createFormDrawerApi.setData({}).open();
 }
 
+const pullLoading = ref(false);
+const pushLoading = ref(false);
+
+// 拉取/推送服务商选择模态框
+const providerSelectModalOpen = ref(false);
+const providerSelectMode = ref<'pull' | 'push'>('pull');
+const selectedProviderId = ref<string>('');
+const providerSelectOptions = ref<Array<{ label: string; value: string }>>([]);
+const providerSelectLoading = ref(false);
+
+async function openProviderSelectModal(mode: 'pull' | 'push') {
+  const rawProviders = recordInfo.value?.providers ?? [];
+  const domainProviderIds = rawProviders.map((p: any) =>
+    typeof p === 'object' ? (p.id ?? p) : p,
+  );
+  if (domainProviderIds.length === 0) {
+    message.warning('当前域名未绑定服务商');
+    return;
+  }
+  providerSelectMode.value = mode;
+  providerSelectLoading.value = true;
+  providerSelectModalOpen.value = true;
+  try {
+    const allProviders = await getDnsProviders();
+    const idSet = new Set(domainProviderIds.map(String));
+    providerSelectOptions.value = allProviders
+      .filter((p) => idSet.has(String(p.id)))
+      .map((p) => ({
+        label: p.name ?? p.providerName ?? String(p.id),
+        value: String(p.id),
+      }));
+    selectedProviderId.value = providerSelectOptions.value[0]?.value ?? '';
+  } catch {
+    message.error('获取服务商列表失败');
+    closeProviderSelectModal();
+  } finally {
+    providerSelectLoading.value = false;
+  }
+}
+
+function closeProviderSelectModal() {
+  providerSelectModalOpen.value = false;
+  selectedProviderId.value = '';
+  providerSelectOptions.value = [];
+}
+
+function onPull() {
+  openProviderSelectModal('pull');
+}
+
+function onPush() {
+  openProviderSelectModal('push');
+}
+
+function handleProviderSelectConfirm() {
+  const providerId = selectedProviderId.value;
+  if (!providerId) {
+    message.warning('请选择服务商');
+    return;
+  }
+  const isPull = providerSelectMode.value === 'pull';
+  if (isPull) {
+    pullLoading.value = true;
+  } else {
+    pushLoading.value = true;
+  }
+  closeProviderSelectModal();
+
+  const apiCall = isPull
+    ? pullDnsRecords(domainId.value, providerId)
+    : pushDnsRecords(domainId.value, providerId);
+
+  apiCall
+    .then((res: any) => {
+      onRefresh();
+      if (res?.taskId) {
+        taskStatusTaskId.value = res.taskId;
+        taskStatusModalOpen.value = true;
+      }
+    })
+    .catch(() => {
+      console.error('拉取/推送DNS记录失败');
+    })
+    .finally(() => {
+      pullLoading.value = false;
+      pushLoading.value = false;
+    });
+}
+
+const providerSelectModalTitle = computed(() =>
+  providerSelectMode.value === 'pull'
+    ? $t('dns.record.selectProviderToPull')
+    : $t('dns.record.selectProviderToPush'),
+);
+
 function getSelectedRows() {
   const reserveRecords = gridApi.grid.getCheckboxReserveRecords();
   const selectedRecords = gridApi.grid.getCheckboxRecords();
@@ -514,6 +612,31 @@ const batchConfirmColumns = [
         @update:open="checkStatusModalOpen = $event"
       />
     </Modal>
+    <!-- 拉取/推送服务商选择模态框 -->
+    <Modal
+      v-model:open="providerSelectModalOpen"
+      :title="providerSelectModalTitle"
+      width="400px"
+      :mask-closable="true"
+      @ok="handleProviderSelectConfirm"
+      @cancel="closeProviderSelectModal"
+    >
+      <div class="py-4">
+        <Select
+          v-model:value="selectedProviderId"
+          :options="providerSelectOptions"
+          :loading="providerSelectLoading"
+          :placeholder="$t('dns.domain.providers')"
+          style="width: 100%"
+          allow-clear
+          show-search
+          :filter-option="
+            (input: string, option: any) =>
+              (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+          "
+        />
+      </div>
+    </Modal>
     <Grid
       :table-title="`${recordInfo?.domainName || ''} ${$t('dns.record.list')}`"
     >
@@ -529,6 +652,22 @@ const batchConfirmColumns = [
 
           <Button @click="onBatchDelete" v-if="hasSelectedRows === true">
             {{ $t('ui.actionTitle.batchDelete') }}
+          </Button>
+
+          <Button :loading="pullLoading" @click="onPull">
+            <IconifyIcon
+              class="size-5"
+              icon="ant-design:cloud-download-outlined"
+            />
+            {{ $t('dns.record.pull') }}
+          </Button>
+
+          <Button :loading="pushLoading" @click="onPush">
+            <IconifyIcon
+              class="size-5"
+              icon="ant-design:cloud-upload-outlined"
+            />
+            {{ $t('dns.record.push') }}
           </Button>
 
           <Button type="primary" @click="onCreate">

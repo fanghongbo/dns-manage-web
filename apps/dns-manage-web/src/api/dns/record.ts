@@ -94,6 +94,30 @@ async function checkDnsRecord(id: string) {
   return requestClient.get<Recordable<any>>(`/api/v1/dns/record/check/${id}`);
 }
 
+/**
+ * 从服务商拉取DNS记录到本地
+ * @param domainId 域名ID
+ * @param providerId 服务商ID
+ */
+async function pullDnsRecords(domainId: string, providerId: string) {
+  return requestClient.post<Recordable<any>>('/api/v1/dns/record/pull', {
+    domainId,
+    providerId,
+  });
+}
+
+/**
+ * 将本地DNS记录推送到服务商
+ * @param domainId 域名ID
+ * @param providerId 服务商ID
+ */
+async function pushDnsRecords(domainId: string, providerId: string) {
+  return requestClient.post<Recordable<any>>('/api/v1/dns/record/push', {
+    domainId,
+    providerId,
+  });
+}
+
 export {
   batchDnsRecords,
   checkDnsRecord,
@@ -102,6 +126,8 @@ export {
   getDnsRecordInfo,
   getDnsRecordList,
   getDnsRecords,
+  pullDnsRecords,
+  pushDnsRecords,
   updateDnsRecord,
   updateDnsRecordStatus,
 };

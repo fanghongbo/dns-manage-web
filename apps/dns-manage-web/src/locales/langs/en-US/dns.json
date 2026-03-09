@@ -81,6 +81,10 @@
     },
     "check": "Check Effect",
     "test": "Test Ping",
+    "pull": "Pull",
+    "push": "Push",
+    "selectProviderToPull": "Select provider to pull from",
+    "selectProviderToPush": "Select provider to push to",
     "checkStatus": {
       "title": "DNS Record Status Check",
       "consistent": "Consistent",

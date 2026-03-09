@@ -81,6 +81,10 @@
     },
     "check": "生效检测",
     "test": "拨测",
+    "pull": "拉取",
+    "push": "推送",
+    "selectProviderToPull": "选择要拉取的服务商",
+    "selectProviderToPush": "选择要推送的服务商",
     "checkStatus": {
       "title": "DNS记录状态检查",
       "consistent": "一致",
