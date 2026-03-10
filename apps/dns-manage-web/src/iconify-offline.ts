@@ -4,7 +4,7 @@
  *
  * 路由图标使用的前缀: lucide, carbon, ion, mdi, charm
  */
-import { addCollection } from '@iconify/vue';
+import { addCollection } from '@vben/icons';
 
 import lucide from '@iconify/json/json/lucide.json';
 import carbon from '@iconify/json/json/carbon.json';
