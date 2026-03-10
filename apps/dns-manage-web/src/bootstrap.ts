@@ -1,6 +1,11 @@
 import { createApp, watchEffect } from 'vue';
 
 import { registerAccessDirective } from '@vben/access';
+
+import { initIconifyOffline } from '#/iconify-offline';
+
+// 内网离线：预加载路由图标，避免从 api.iconify.design 在线加载
+initIconifyOffline();
 import { registerLoadingDirective } from '@vben/common-ui/es/loading';
 import { preferences } from '@vben/preferences';
 import { initStores } from '@vben/stores';
