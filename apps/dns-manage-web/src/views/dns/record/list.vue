@@ -657,7 +657,7 @@ const batchConfirmColumns = [
           <Button :loading="pullLoading" @click="onPull">
             <IconifyIcon
               class="size-5"
-              icon="ant-design:cloud-download-outlined"
+              icon="lucide:cloud-download"
             />
             {{ $t('dns.record.pull') }}
           </Button>
@@ -665,7 +665,7 @@ const batchConfirmColumns = [
           <Button :loading="pushLoading" @click="onPush">
             <IconifyIcon
               class="size-5"
-              icon="ant-design:cloud-upload-outlined"
+              icon="lucide:cloud-upload"
             />
             {{ $t('dns.record.push') }}
           </Button>
