@@ -19,6 +19,8 @@ interface UserInfo extends BasicUserInfo {
   realUsername: string;
 
   username: string;
+
+  accessCodes: string[];
 }
 
 export type { UserInfo };

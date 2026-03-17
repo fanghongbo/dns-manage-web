@@ -84,10 +84,10 @@ const permissions = ref<DataNode[]>([
             },
           },
           {
-            key: 'dns.domain.edit',
+            key: 'dns.domain.update',
             type: 'button',
             meta: {
-              title: 'common.edit',
+              title: 'common.update',
             },
           },
           {
@@ -95,6 +95,86 @@ const permissions = ref<DataNode[]>([
             type: 'button',
             meta: {
               title: 'common.delete',
+            },
+          },
+          {
+            key: 'dns.domain.record',
+            type: 'button',
+            meta: {
+              title: 'dns.domain.record',
+            },
+          },
+          {
+            key: 'dns.domain.analysis',
+            type: 'button',
+            meta: {
+              title: 'dns.domain.analysis',
+            },
+          },
+        ],
+      },
+      {
+        key: 'dns.record',
+        type: 'menu',
+        meta: {
+          icon: 'mdi:record',
+          title: 'dns.record.title',
+        },
+        children: [
+          {
+            key: 'dns.record.list',
+            type: 'button',
+            meta: {
+              title: 'common.list',
+            },
+          },
+          {
+            key: 'dns.record.get',
+            type: 'button',
+            meta: {
+              title: 'common.get',
+            },
+          },
+          {
+            key: 'dns.record.create',
+            type: 'button',
+            meta: {
+              title: 'common.create',
+            },
+          },
+          {
+            key: 'dns.record.update',
+            type: 'button',
+            meta: {
+              title: 'common.update',
+            },
+          },
+          {
+            key: 'dns.record.delete',
+            type: 'button',
+            meta: {
+              title: 'common.delete',
+            },
+          },
+          {
+            key: 'dns.record.check',
+            type: 'button',
+            meta: {
+              title: 'dns.record.check',
+            },
+          },
+          {
+            key: 'dns.record.push',
+            type: 'button',
+            meta: {
+              title: 'dns.record.push',
+            },
+          },
+          {
+            key: 'dns.record.pull',
+            type: 'button',
+            meta: {
+              title: 'dns.record.pull',
             },
           },
         ],
@@ -129,10 +209,10 @@ const permissions = ref<DataNode[]>([
             },
           },
           {
-            key: 'dns.provider.edit',
+            key: 'dns.provider.update',
             type: 'button',
             meta: {
-              title: 'common.edit',
+              title: 'common.update',
             },
           },
           {
@@ -140,6 +220,71 @@ const permissions = ref<DataNode[]>([
             type: 'button',
             meta: {
               title: 'common.delete',
+            },
+          },
+        ],
+      },
+      {
+        key: 'dns.task',
+        type: 'menu',
+        meta: {
+          icon: 'mdi:list-todo',
+          title: 'dns.task.title',
+        },
+        children: [
+          {
+            key: 'dns.task.list',
+            type: 'button',
+            meta: {
+              title: 'common.list',
+            },
+          },
+          {
+            key: 'dns.task.get',
+            type: 'button',
+            meta: {
+              title: 'dns.task.detail',
+            },
+          },
+        ],
+      },
+      {
+        key: 'dns.log',
+        type: 'menu',
+        meta: {
+          icon: 'mdi:history',
+          title: 'dns.log.title',
+        },
+        children: [
+          {
+            key: 'dns.log.list',
+            type: 'button',
+            meta: {
+              title: 'common.list',
+            },
+          },
+        ],
+      },
+      {
+        key: 'dns.analysis',
+        type: 'menu',
+        meta: {
+          icon: 'mdi:chart-box',
+          title: 'dns.analysis.title',
+        },
+        children: [
+          {
+            key: 'dns.analysis.list',
+            type: 'button',
+            meta: {
+              title: 'common.list',
+            },
+          },
+          {
+            key: 'dns.analysis.detail',
+            type: 'button',
+            meta: {
+              title: 'common.get',
             },
           },
         ],
@@ -184,10 +329,10 @@ const permissions = ref<DataNode[]>([
             },
           },
           {
-            key: 'system.role.edit',
+            key: 'system.role.update',
             type: 'button',
             meta: {
-              title: 'common.edit',
+              title: 'common.update',
             },
           },
           {
@@ -229,10 +374,10 @@ const permissions = ref<DataNode[]>([
             },
           },
           {
-            key: 'system.user.edit',
+            key: 'system.user.update',
             type: 'button',
             meta: {
-              title: 'common.edit',
+              title: 'common.update',
             },
           },
           {
@@ -253,35 +398,35 @@ const permissions = ref<DataNode[]>([
         },
         children: [
           {
-            key: 'system.userGroup.list',
+            key: 'system.user.group.list',
             type: 'button',
             meta: {
               title: 'common.list',
             },
           },
           {
-            key: 'system.userGroup.get',
+            key: 'system.user.group.get',
             type: 'button',
             meta: {
               title: 'common.get',
             },
           },
           {
-            key: 'system.userGroup.create',
+            key: 'system.user.group.create',
             type: 'button',
             meta: {
               title: 'common.create',
             },
           },
           {
-            key: 'system.userGroup.edit',
+            key: 'system.user.group.update',
             type: 'button',
             meta: {
-              title: 'common.edit',
+              title: 'common.update',
             },
           },
           {
-            key: 'system.userGroup.delete',
+            key: 'system.user.group.delete',
             type: 'button',
             meta: {
               title: 'common.delete',
@@ -289,23 +434,23 @@ const permissions = ref<DataNode[]>([
           },
         ],
       },
-      {
-        key: 'system.audit',
-        type: 'menu',
-        meta: {
-          icon: 'mdi:history',
-          title: 'system.audit.title',
-        },
-        children: [
-          {
-            key: 'system.audit.list',
-            type: 'button',
-            meta: {
-              title: 'common.list',
-            },
-          },
-        ],
-      },
+      // {
+      //   key: 'system.audit',
+      //   type: 'menu',
+      //   meta: {
+      //     icon: 'mdi:history',
+      //     title: 'system.audit.title',
+      //   },
+      //   children: [
+      //     {
+      //       key: 'system.audit.list',
+      //       type: 'button',
+      //       meta: {
+      //         title: 'common.list',
+      //       },
+      //     },
+      //   ],
+      // },
     ],
   },
 ]);
@@ -314,6 +459,7 @@ const loadingPermissions = ref(false);
 
 const id = ref();
 const [Drawer, drawerApi] = useVbenDrawer({
+  class: '!w-[40vw] max-w-none',
   async onConfirm() {
     const { valid } = await formApi.validate();
     if (!valid) return;
@@ -352,7 +498,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
 const getDrawerTitle = computed(() => {
   return formData.value?.id
-    ? $t('common.edit', $t('system.role.roleName'))
+    ? $t('common.update', $t('system.role.roleName'))
     : $t('common.create', $t('system.role.roleName'));
 });
 

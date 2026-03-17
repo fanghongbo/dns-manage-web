@@ -215,6 +215,7 @@
     "diff0": "{sourceName} Exist / {targetName} Not Exist Records",
     "diff1": "{sourceName} Not Exist / {targetName} Exist Records",
     "diff2": "{sourceName} / {targetName} Different Records",
+    "detail": "Analysis Detail",
     "record": {
       "title": "Analysis Record",
       "list": "Analysis Record List",

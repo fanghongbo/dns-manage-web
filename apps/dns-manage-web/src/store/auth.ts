@@ -51,18 +51,12 @@ export const useAuthStore = defineStore('auth', () => {
       // 先调用登录接口（返回 data 为空字符串）
       await loginApi(args);
 
-      // 登录成功后，从用户信息接口获取 token
-      // const [fetchUserInfoResult, accessCodes] = await Promise.all([
-      //   fetchUserInfo(),
-      //   getAccessCodesApi(),
-      // ]);
-
       const fetchUserInfoResult = await fetchUserInfo();
 
       userInfo = fetchUserInfoResult;
 
       userStore.setUserInfo(userInfo);
-      // accessStore.setAccessCodes(accessCodes);
+      accessStore.setAccessCodes(userInfo.accessCodes);
 
       // 使用 cookie 认证，设置虚拟 token 标识已登录状态
       // 实际认证通过 cookie 完成，这里只是作为登录状态的标志

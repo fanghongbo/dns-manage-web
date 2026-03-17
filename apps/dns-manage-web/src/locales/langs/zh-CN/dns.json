@@ -215,6 +215,7 @@
     "diff0": "{sourceName}存在 / {targetName}不存在的记录",
     "diff1": "{sourceName}不存在 / {targetName}存在的记录",
     "diff2": "{sourceName} / {targetName} 存在差异的记录",
+    "detail": "分析详情",
     "record": {
       "title": "分析记录",
       "list": "分析记录列表",
