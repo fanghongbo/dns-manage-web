@@ -98,6 +98,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
 export function useColumns<T = DnsDomainApi.DnsDomain>(
   onActionClick: OnActionClickFn<T>,
   onStatusChange?: (newStatus: any, row: T) => PromiseLike<boolean | undefined>,
+  hasAccessByCodes?: (codes: string[]) => boolean,
 ): VxeTableGridOptions['columns'] {
   return [
     {
@@ -119,7 +120,8 @@ export function useColumns<T = DnsDomainApi.DnsDomain>(
     {
       cellRender: {
         attrs: { beforeChange: onStatusChange },
-        name: onStatusChange ? 'CellSwitch' : 'CellTag',
+        // eslint-disable-next-line prettier/prettier
+        name: onStatusChange ? (hasAccessByCodes?.(['dns.domain.update']) ? 'CellSwitch' : 'CellTag') : 'CellTag',
       },
       field: 'status',
       title: $t('dns.domain.status'),
@@ -151,13 +153,31 @@ export function useColumns<T = DnsDomainApi.DnsDomain>(
           {
             code: 'record',
             text: $t('dns.domain.record'),
+            show: hasAccessByCodes
+              ? hasAccessByCodes(['dns.domain.record'])
+              : true,
           },
           {
             code: 'analysis',
             text: $t('dns.domain.analysis'),
+            show: hasAccessByCodes
+              ? hasAccessByCodes(['dns.domain.analysis'])
+              : true,
           },
-          'edit',
-          'delete',
+          {
+            code: 'edit',
+            text: $t('common.edit'),
+            show: hasAccessByCodes
+              ? hasAccessByCodes(['dns.domain.update'])
+              : true,
+          },
+          {
+            code: 'delete',
+            text: $t('common.delete'),
+            show: hasAccessByCodes
+              ? hasAccessByCodes(['dns.domain.delete'])
+              : true,
+          },
         ],
       },
       field: 'operation',

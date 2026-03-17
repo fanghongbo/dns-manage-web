@@ -10,6 +10,7 @@ import type { DnsRecordApi } from '#/api/dns/record';
 import { computed, nextTick, onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
+import { useAccess } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon, Plus } from '@vben/icons';
 
@@ -38,6 +39,8 @@ import UpdateForm from './modules/update_form.vue';
 
 const route = useRoute();
 const domainId = computed(() => route.params.domainId as string);
+
+const { hasAccessByCodes } = useAccess();
 
 const [CreateFormDrawer, createFormDrawerApi] = useVbenDrawer({
   connectedComponent: CreateForm,
@@ -121,18 +124,26 @@ const [Grid, gridApi] = useVbenVxeGrid({
       const rows = getSelectedRows();
       hasSelectedRows.value = rows.length > 0;
     },
-    columns: useColumns(onActionClick, onStatusChange),
+    columns: useColumns(onActionClick, onStatusChange, hasAccessByCodes),
     height: 'auto',
     keepSource: true,
     proxyConfig: {
       ajax: {
         query: async ({ page }, formValues) => {
-          return await getDnsRecordList({
-            domainId: domainId.value,
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            ...formValues,
-          });
+          return hasAccessByCodes(['dns.record.list'])
+            ? await getDnsRecordList({
+                domainId: domainId.value,
+                page: page.currentPage,
+                pageSize: page.pageSize,
+                ...formValues,
+              })
+            : {
+                data: [],
+                page: {
+                  currentPage: 1,
+                  pageSize: 10,
+                },
+              };
         },
       },
     },
@@ -642,35 +653,59 @@ const batchConfirmColumns = [
     >
       <template #toolbar-tools>
         <Space>
-          <Button @click="onBatchEnable" v-if="hasSelectedRows === true">
+          <Button
+            @click="onBatchEnable"
+            v-if="
+              hasSelectedRows === true &&
+              hasAccessByCodes(['dns.record.update'])
+            "
+          >
             {{ $t('ui.actionTitle.batchEnable') }}
           </Button>
 
-          <Button @click="onBatchDisable" v-if="hasSelectedRows === true">
+          <Button
+            @click="onBatchDisable"
+            v-if="
+              hasSelectedRows === true &&
+              hasAccessByCodes(['dns.record.update'])
+            "
+          >
             {{ $t('ui.actionTitle.batchDisable') }}
           </Button>
 
-          <Button @click="onBatchDelete" v-if="hasSelectedRows === true">
+          <Button
+            @click="onBatchDelete"
+            v-if="
+              hasSelectedRows === true &&
+              hasAccessByCodes(['dns.record.delete'])
+            "
+          >
             {{ $t('ui.actionTitle.batchDelete') }}
           </Button>
 
-          <Button :loading="pullLoading" @click="onPull">
-            <IconifyIcon
-              class="size-5"
-              icon="lucide:cloud-download"
-            />
+          <Button
+            :loading="pullLoading"
+            @click="onPull"
+            v-if="hasAccessByCodes(['dns.record.pull'])"
+          >
+            <IconifyIcon class="size-5" icon="lucide:cloud-download" />
             {{ $t('dns.record.pull') }}
           </Button>
 
-          <Button :loading="pushLoading" @click="onPush">
-            <IconifyIcon
-              class="size-5"
-              icon="lucide:cloud-upload"
-            />
+          <Button
+            :loading="pushLoading"
+            @click="onPush"
+            v-if="hasAccessByCodes(['dns.record.push'])"
+          >
+            <IconifyIcon class="size-5" icon="lucide:cloud-upload" />
             {{ $t('dns.record.push') }}
           </Button>
 
-          <Button type="primary" @click="onCreate">
+          <Button
+            type="primary"
+            @click="onCreate"
+            v-if="hasAccessByCodes(['dns.record.create'])"
+          >
             <Plus class="size-5" />
             {{ $t('ui.actionTitle.create', [$t('dns.record.name')]) }}
           </Button>

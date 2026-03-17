@@ -7,6 +7,7 @@ import type {
 } from '#/adapter/vxe-table';
 import type { DnsProviderApi } from '#/api/dns/provider';
 
+import { useAccess } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
@@ -23,6 +24,8 @@ import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
+
+const { hasAccessByCodes } = useAccess();
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
@@ -46,17 +49,25 @@ const [Grid, gridApi] = useVbenVxeGrid({
     submitOnChange: true,
   },
   gridOptions: {
-    columns: useColumns(onActionClick, onStatusChange),
+    columns: useColumns(onActionClick, onStatusChange, hasAccessByCodes),
     height: 'auto',
     keepSource: true,
     proxyConfig: {
       ajax: {
         query: async ({ page }, formValues) => {
-          return await getDnsProviderList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            ...formValues,
-          });
+          return hasAccessByCodes(['dns.provider.list'])
+            ? await getDnsProviderList({
+                page: page.currentPage,
+                pageSize: page.pageSize,
+                ...formValues,
+              })
+            : {
+                data: [],
+                page: {
+                  currentPage: 1,
+                  pageSize: 10,
+                },
+              };
         },
       },
     },
@@ -113,7 +124,10 @@ function confirm(content: string, title: string) {
  * @param row 行数据
  * @returns 返回false则中止改变，返回其他值（undefined、true）则允许改变
  */
-async function onStatusChange(newStatus: number, row: DnsProviderApi.DnsProvider) {
+async function onStatusChange(
+  newStatus: number,
+  row: DnsProviderApi.DnsProvider,
+) {
   const status: Recordable<string> = {
     0: '禁用',
     1: '启用',
@@ -166,7 +180,11 @@ function onCreate() {
     <FormDrawer @success="onRefresh" />
     <Grid :table-title="$t('dns.provider.list')">
       <template #toolbar-tools>
-        <Button type="primary" @click="onCreate">
+        <Button
+          type="primary"
+          @click="onCreate"
+          v-if="hasAccessByCodes(['dns.provider.create'])"
+        >
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('dns.provider.name')]) }}
         </Button>

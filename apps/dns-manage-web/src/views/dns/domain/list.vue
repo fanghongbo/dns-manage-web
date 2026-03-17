@@ -11,6 +11,7 @@ import type { DnsProviderApi } from '#/api/dns/provider';
 import { nextTick, onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+import { useAccess } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
@@ -31,6 +32,8 @@ import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
 
 const router = useRouter();
+
+const { hasAccessByCodes } = useAccess();
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
@@ -54,17 +57,25 @@ const [Grid, gridApi] = useVbenVxeGrid({
     submitOnChange: true,
   },
   gridOptions: {
-    columns: useColumns(onActionClick, onStatusChange),
+    columns: useColumns(onActionClick, onStatusChange, hasAccessByCodes),
     height: 'auto',
     keepSource: true,
     proxyConfig: {
       ajax: {
         query: async ({ page }, formValues) => {
-          return await getDnsDomainList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            ...formValues,
-          });
+          return hasAccessByCodes(['dns.domain.list'])
+            ? await getDnsDomainList({
+                page: page.currentPage,
+                pageSize: page.pageSize,
+                ...formValues,
+              })
+            : {
+                data: [],
+                page: {
+                  currentPage: 1,
+                  pageSize: 10,
+                },
+              };
         },
       },
     },
@@ -243,7 +254,11 @@ function onRecord(row: DnsDomainApi.DnsDomain) {
     <FormDrawer @success="onRefresh" />
     <Grid :table-title="$t('dns.domain.list')">
       <template #toolbar-tools>
-        <Button type="primary" @click="onCreate">
+        <Button
+          type="primary"
+          @click="onCreate"
+          v-if="hasAccessByCodes(['dns.domain.create'])"
+        >
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('dns.domain.name')]) }}
         </Button>

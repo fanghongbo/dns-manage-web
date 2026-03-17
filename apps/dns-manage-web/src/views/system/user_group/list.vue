@@ -7,6 +7,7 @@ import type {
 } from '#/adapter/vxe-table';
 import type { SystemUserGroupApi } from '#/api/system/user_group';
 
+import { useAccess } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
@@ -29,6 +30,8 @@ const [FormDrawer, formDrawerApi] = useVbenDrawer({
   destroyOnClose: true,
 });
 
+const { hasAccessByCodes } = useAccess();
+
 // @ts-expect-error ignore
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
@@ -46,17 +49,25 @@ const [Grid, gridApi] = useVbenVxeGrid({
     submitOnChange: true,
   },
   gridOptions: {
-    columns: useColumns(onActionClick, onStatusChange),
+    columns: useColumns(onActionClick, onStatusChange, hasAccessByCodes),
     height: 'auto',
     keepSource: true,
     proxyConfig: {
       ajax: {
         query: async ({ page }, formValues) => {
-          return await getUserGroupList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            ...formValues,
-          });
+          return hasAccessByCodes(['system.user.group.list'])
+            ? await getUserGroupList({
+                page: page.currentPage,
+                pageSize: page.pageSize,
+                ...formValues,
+              })
+            : {
+                data: [],
+                page: {
+                  currentPage: 1,
+                  pageSize: 10,
+                },
+              };
         },
       },
     },
@@ -170,7 +181,11 @@ function onCreate() {
     <FormDrawer @success="onRefresh" />
     <Grid :table-title="$t('system.userGroup.list')">
       <template #toolbar-tools>
-        <Button type="primary" @click="onCreate">
+        <Button
+          type="primary"
+          @click="onCreate"
+          v-if="hasAccessByCodes(['system.user.group.create'])"
+        >
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('system.userGroup.name')]) }}
         </Button>

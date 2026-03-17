@@ -132,6 +132,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
 export function useColumns<T = DnsProviderApi.DnsProvider>(
   onActionClick: OnActionClickFn<T>,
   onStatusChange?: (newStatus: any, row: T) => PromiseLike<boolean | undefined>,
+  hasAccessByCodes?: (codes: string[]) => boolean,
 ): VxeTableGridOptions['columns'] {
   return [
     {
@@ -162,7 +163,8 @@ export function useColumns<T = DnsProviderApi.DnsProvider>(
     {
       cellRender: {
         attrs: { beforeChange: onStatusChange },
-        name: onStatusChange ? 'CellSwitch' : 'CellTag',
+        // eslint-disable-next-line prettier/prettier
+        name: onStatusChange ? (hasAccessByCodes?.(['dns.provider.update']) ? 'CellSwitch' : 'CellTag') : 'CellTag',
       },
       field: 'status',
       title: $t('dns.provider.status'),
@@ -190,6 +192,22 @@ export function useColumns<T = DnsProviderApi.DnsProvider>(
           onClick: onActionClick,
         },
         name: 'CellOperation',
+        options: [
+          {
+            code: 'edit',
+            text: $t('common.edit'),
+            show: hasAccessByCodes
+              ? hasAccessByCodes(['dns.provider.update'])
+              : true,
+          },
+          {
+            code: 'delete',
+            text: $t('common.delete'),
+            show: hasAccessByCodes
+              ? hasAccessByCodes(['dns.provider.delete'])
+              : true,
+          },
+        ],
       },
       field: 'operation',
       fixed: 'right',

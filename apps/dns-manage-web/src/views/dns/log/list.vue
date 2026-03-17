@@ -2,6 +2,7 @@
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { DnsLogApi } from '#/api/dns/task_log';
 
+import { useAccess } from '@vben/access';
 import { Page } from '@vben/common-ui';
 
 import dayjs from 'dayjs';
@@ -11,6 +12,8 @@ import { getDnsLogList } from '#/api/dns/task_log';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
+
+const { hasAccessByCodes } = useAccess();
 
 // @ts-expect-error ignore error
 const [Grid] = useVbenVxeGrid({
@@ -35,11 +38,19 @@ const [Grid] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async ({ page }, formValues) => {
-          return await getDnsLogList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            ...formValues,
-          });
+          return hasAccessByCodes(['dns.log.list'])
+            ? await getDnsLogList({
+                page: page.currentPage,
+                pageSize: page.pageSize,
+                ...formValues,
+              })
+            : {
+                data: [],
+                page: {
+                  currentPage: 1,
+                  pageSize: 10,
+                },
+              };
         },
       },
     },

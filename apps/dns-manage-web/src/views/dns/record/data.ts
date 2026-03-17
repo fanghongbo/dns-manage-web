@@ -761,6 +761,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
 export function useColumns<T = DnsRecordApi.DnsRecord>(
   onActionClick: OnActionClickFn<T>,
   onStatusChange?: (newStatus: any, row: T) => PromiseLike<boolean | undefined>,
+  hasAccessByCodes?: (codes: string[]) => boolean,
 ): VxeTableGridOptions['columns'] {
   return [
     {
@@ -829,7 +830,8 @@ export function useColumns<T = DnsRecordApi.DnsRecord>(
     {
       cellRender: {
         attrs: { beforeChange: onStatusChange },
-        name: onStatusChange ? 'CellSwitch' : 'CellTag',
+        // eslint-disable-next-line prettier/prettier
+        name: onStatusChange ? (hasAccessByCodes?.(['dns.record.update']) ? 'CellSwitch' : 'CellTag') : 'CellTag',
       },
       field: 'status',
       title: $t('dns.record.status'),
@@ -861,6 +863,9 @@ export function useColumns<T = DnsRecordApi.DnsRecord>(
           {
             code: 'check',
             text: $t('dns.record.check'),
+            show: hasAccessByCodes
+              ? hasAccessByCodes(['dns.record.check'])
+              : true,
           },
           // {
           //   code: 'test',
@@ -869,10 +874,16 @@ export function useColumns<T = DnsRecordApi.DnsRecord>(
           {
             code: 'edit',
             text: $t('common.edit'),
+            show: hasAccessByCodes
+              ? hasAccessByCodes(['dns.record.update'])
+              : true,
           },
           {
             code: 'delete',
             text: $t('common.delete'),
+            show: hasAccessByCodes
+              ? hasAccessByCodes(['dns.record.delete'])
+              : true,
           },
         ],
       },

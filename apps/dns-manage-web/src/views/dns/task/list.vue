@@ -7,6 +7,7 @@ import type { DnsTaskApi } from '#/api/dns/task';
 
 import { useRouter } from 'vue-router';
 
+import { useAccess } from '@vben/access';
 import { Page } from '@vben/common-ui';
 
 import dayjs from 'dayjs';
@@ -18,6 +19,8 @@ import { $t } from '#/locales';
 import { useColumns, useGridFormSchema } from './data';
 
 const router = useRouter();
+
+const { hasAccessByCodes } = useAccess();
 
 // @ts-expect-error ignore error
 const [Grid] = useVbenVxeGrid({
@@ -42,11 +45,19 @@ const [Grid] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async ({ page }, formValues) => {
-          return await getDnsTaskList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            ...formValues,
-          });
+          return hasAccessByCodes(['dns.task.list'])
+            ? await getDnsTaskList({
+                page: page.currentPage,
+                pageSize: page.pageSize,
+                ...formValues,
+              })
+            : {
+                data: [],
+                page: {
+                  currentPage: 1,
+                  pageSize: 10,
+                },
+              };
         },
       },
     },

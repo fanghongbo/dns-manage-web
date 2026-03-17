@@ -93,6 +93,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
 
 export function useColumns<T = DnsTaskApi.DnsTask>(
   onActionClick: OnActionClickFn<T>,
+  hasAccessByCodes?: (codes: string[]) => boolean,
 ): VxeTableGridOptions['columns'] {
   return [
     {
@@ -292,6 +293,9 @@ export function useColumns<T = DnsTaskApi.DnsTask>(
           {
             code: 'record',
             text: $t('dns.task.detail'),
+            show: hasAccessByCodes
+              ? hasAccessByCodes(['dns.task.detail'])
+              : true,
           },
         ],
       },

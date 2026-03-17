@@ -105,6 +105,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
 export function useColumns<T = SystemUserGroupApi.SystemUserGroup>(
   onActionClick: OnActionClickFn<T>,
   onStatusChange?: (newStatus: any, row: T) => PromiseLike<boolean | undefined>,
+  hasAccessByCodes?: (codes: string[]) => boolean,
 ): VxeTableGridOptions['columns'] {
   return [
     {
@@ -120,7 +121,8 @@ export function useColumns<T = SystemUserGroupApi.SystemUserGroup>(
     {
       cellRender: {
         attrs: { beforeChange: onStatusChange },
-        name: onStatusChange ? 'CellSwitch' : 'CellTag',
+        // eslint-disable-next-line prettier/prettier
+        name: onStatusChange ? (hasAccessByCodes?.(['system.user.group.update']) ? 'CellSwitch' : 'CellTag') : 'CellTag',
       },
       field: 'status',
       title: $t('system.userGroup.status'),
@@ -149,6 +151,22 @@ export function useColumns<T = SystemUserGroupApi.SystemUserGroup>(
           onClick: onActionClick,
         },
         name: 'CellOperation',
+        options: [
+          {
+            code: 'edit',
+            text: $t('common.edit'),
+            show: hasAccessByCodes
+              ? hasAccessByCodes(['system.user.group.update'])
+              : true,
+          },
+          {
+            code: 'delete',
+            text: $t('common.delete'),
+            show: hasAccessByCodes
+              ? hasAccessByCodes(['system.user.group.delete'])
+              : true,
+          },
+        ],
       },
       field: 'operation',
       fixed: 'right',
