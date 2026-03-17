@@ -212,10 +212,15 @@ async function onStatusChange(newStatus: number, row: DnsDomainApi.DnsDomain) {
 }
 
 function onEdit(row: DnsDomainApi.DnsDomain) {
-  row.providers = row.providers.map(
-    (provider: DnsProviderApi.DnsProvider) => provider.id,
-  );
-  formDrawerApi.setData(row).open();
+  // 不要直接修改表格行数据，否则 providers 从对象数组变成 id 数组后，
+  // CellTags 渲染将拿不到服务商名称，导致显示为 '-'
+  const formRow = {
+    ...row,
+    providers: row.providers.map(
+      (provider: DnsProviderApi.DnsProvider) => provider.id,
+    ),
+  };
+  formDrawerApi.setData(formRow).open();
 }
 
 function onDelete(row: DnsDomainApi.DnsDomain) {
