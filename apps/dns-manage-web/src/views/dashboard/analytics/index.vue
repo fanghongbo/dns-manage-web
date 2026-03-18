@@ -27,31 +27,35 @@ import AnalyticsVisits from './analytics-visits.vue';
 const overviewItems = ref<AnalysisOverviewItem[]>([
   {
     icon: SvgCardIcon,
-    title: '域名变更',
+    title: '域名变更数',
     totalTitle: '总域名数',
     totalValue: 0,
     value: 0,
+    type: 'count',
   },
   {
     icon: SvgCakeIcon,
-    title: 'DNS记录变更',
-    totalTitle: '总DNS记录数',
+    title: 'DNS记录变更数',
+    totalTitle: '总DNS变更记录',
     totalValue: 0,
     value: 0,
+    type: 'count',
   },
   {
     icon: SvgBellIcon,
-    title: '本周任务',
+    title: '本周任务数',
     totalTitle: '总任务数',
     totalValue: 0,
     value: 0,
+    type: 'count',
   },
   {
     icon: SvgDownloadIcon,
-    title: '执行成功率',
-    totalTitle: '总成功率数',
+    title: '本周任务成功率',
+    totalTitle: '总成功率',
     totalValue: 0,
     value: 0,
+    type: 'percent',
   },
 ]);
 
@@ -67,6 +71,7 @@ onMounted(async () => {
         totalTitle: item0!.totalTitle,
         totalValue: res.domainStat?.total || 0,
         value: res.domainStat?.value || 0,
+        type: 'count',
       },
       {
         icon: item1!.icon,
@@ -74,6 +79,7 @@ onMounted(async () => {
         totalTitle: item1!.totalTitle,
         totalValue: res.domainRecordStat?.total || 0,
         value: res.domainRecordStat?.value || 0,
+        type: 'count',
       },
       {
         icon: item2!.icon,
@@ -81,6 +87,7 @@ onMounted(async () => {
         totalTitle: item2!.totalTitle,
         totalValue: res.taskStat?.total || 0,
         value: res.taskStat?.value || 0,
+        type: 'count',
       },
       {
         icon: item3!.icon,
@@ -88,6 +95,7 @@ onMounted(async () => {
         totalTitle: item3!.totalTitle,
         totalValue: res.taskRate?.total || 0,
         value: res.taskRate?.value || 0,
+        type: 'percent',
       },
     ];
   } catch {

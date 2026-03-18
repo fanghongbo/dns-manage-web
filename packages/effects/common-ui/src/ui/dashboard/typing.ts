@@ -6,6 +6,7 @@ interface AnalysisOverviewItem {
   totalTitle: string;
   totalValue: number;
   value: number;
+  type: 'count' | 'percent';
 }
 
 interface WorkbenchProjectItem {

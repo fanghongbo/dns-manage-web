@@ -33,21 +33,27 @@ withDefaults(defineProps<Props>(), {
         </CardHeader>
 
         <CardContent class="flex items-center justify-between">
-          <VbenCountToAnimator
-            :end-val="item.value"
-            :start-val="1"
-            class="text-xl"
-            prefix=""
-          />
+          <span>
+            <VbenCountToAnimator
+              :end-val="item.value"
+              :start-val="1"
+              class="text-xl"
+              prefix=""
+            />
+            <span v-if="item.type === 'percent'" class="text-xl">%</span>
+          </span>
           <VbenIcon :icon="item.icon" class="size-8 flex-shrink-0" />
         </CardContent>
         <CardFooter class="justify-between">
           <span>{{ item.totalTitle }}</span>
-          <VbenCountToAnimator
-            :end-val="item.totalValue"
-            :start-val="1"
-            prefix=""
-          />
+          <span>
+            <VbenCountToAnimator
+              :end-val="item.totalValue"
+              :start-val="1"
+              prefix=""
+            />
+            <span v-if="item.type === 'percent'">%</span>
+          </span>
         </CardFooter>
       </Card>
     </template>
