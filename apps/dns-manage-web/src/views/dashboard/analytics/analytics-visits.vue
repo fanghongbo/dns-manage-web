@@ -5,10 +5,28 @@ import { onMounted, ref } from 'vue';
 
 import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
 
+import { getDnsStatTrend } from '#/api/dns/task_stat';
+
 const chartRef = ref<EchartsUIType>();
 const { renderEcharts } = useEcharts(chartRef);
 
-onMounted(() => {
+/**
+ * 获取dns记录趋势并渲染图表
+ */
+const fetchDnsRecordTrend = async () => {
+  const res = await getDnsStatTrend().catch((error) => {
+    console.error(error);
+    return null;
+  });
+
+  const times: string[] = res?.times ?? res?.data?.times ?? [];
+  const records: number[] = res?.records ?? res?.data?.records ?? [];
+
+  if (times.length === 0 || records.length === 0) {
+    // 没有数据时直接返回，保留空图
+    return;
+  }
+
   renderEcharts({
     grid: {
       bottom: 0,
@@ -19,12 +37,9 @@ onMounted(() => {
     },
     series: [
       {
+        name: '记录数',
         barMaxWidth: 80,
-        // color: '#4f69fd',
-        data: [
-          3000, 2000, 3333, 5000, 3200, 4200, 3200, 2100, 3000, 5100, 6000,
-          3200, 4800,
-        ],
+        data: records,
         type: 'bar',
       },
     ],
@@ -38,15 +53,18 @@ onMounted(() => {
       trigger: 'axis',
     },
     xAxis: {
-      data: Array.from({ length: 12 }).map((_item, index) => `${index + 1}月`),
+      data: times,
       type: 'category',
     },
     yAxis: {
-      max: 8000,
       splitNumber: 4,
       type: 'value',
     },
   });
+};
+
+onMounted(() => {
+  fetchDnsRecordTrend();
 });
 </script>
 
