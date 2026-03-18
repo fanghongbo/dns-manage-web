@@ -20,6 +20,9 @@ export namespace DnsStatApi {
       value: number;
     };
   }
+  export interface DnsChangeTrend {
+    [key: string]: any;
+  }
 }
 
 /**
@@ -30,4 +33,14 @@ async function getDnsStatOverview() {
     '/api/v1/dns/stat/overview',
   );
 }
-export { getDnsStatOverview };
+
+/**
+ * 获取dns变更趋势
+ */
+async function getDnsChangeTrend() {
+  return requestClient.get<DnsStatApi.DnsChangeTrend>(
+    '/api/v1/dns/change/trend',
+  );
+}
+
+export { getDnsChangeTrend, getDnsStatOverview };

@@ -5,10 +5,24 @@ import { onMounted, ref } from 'vue';
 
 import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
 
+import { getDnsChangeTrend } from '#/api/dns/task_stat';
+
 const chartRef = ref<EchartsUIType>();
 const { renderEcharts } = useEcharts(chartRef);
 
-onMounted(() => {
+onMounted(async () => {
+  const trend = await getDnsChangeTrend();
+  const times: string[] = trend?.times ?? [];
+  const add: number[] = trend?.add ?? [];
+  const update: number[] = trend?.update ?? [];
+  const del: number[] = trend?.delete ?? [];
+  const total: number[] = times.map((_, idx) => {
+    const a = add[idx] ?? 0;
+    const u = update[idx] ?? 0;
+    const d = del[idx] ?? 0;
+    return a + u + d;
+  });
+
   renderEcharts({
     grid: {
       bottom: 0,
@@ -19,29 +33,40 @@ onMounted(() => {
     },
     series: [
       {
-        areaStyle: {},
-        data: [
-          111, 2000, 6000, 16_000, 33_333, 55_555, 64_000, 33_333, 18_000,
-          36_000, 70_000, 42_444, 23_222, 13_000, 8000, 4000, 1200, 333, 222,
-          111,
-        ],
-        itemStyle: {
-          color: '#5ab1ef',
-        },
-        smooth: true,
+        name: '新增',
         type: 'line',
+        smooth: true,
+        data: add,
+        itemStyle: {
+          color: '#3b82f6',
+        },
       },
       {
-        areaStyle: {},
-        data: [
-          33, 66, 88, 333, 3333, 6200, 20_000, 3000, 1200, 13_000, 22_000,
-          11_000, 2221, 1201, 390, 198, 60, 30, 22, 11,
-        ],
-        itemStyle: {
-          color: '#019680',
-        },
-        smooth: true,
+        name: '更新',
         type: 'line',
+        smooth: true,
+        data: update,
+        itemStyle: {
+          color: '#10b981',
+        },
+      },
+      {
+        name: '删除',
+        type: 'line',
+        smooth: true,
+        data: del,
+        itemStyle: {
+          color: '#f97316',
+        },
+      },
+      {
+        name: '总变更',
+        type: 'line',
+        smooth: true,
+        data: total,
+        itemStyle: {
+          color: '#6366f1',
+        },
       },
     ],
     tooltip: {
@@ -53,20 +78,12 @@ onMounted(() => {
       },
       trigger: 'axis',
     },
-    // xAxis: {
-    //   axisTick: {
-    //     show: false,
-    //   },
-    //   boundaryGap: false,
-    //   data: Array.from({ length: 18 }).map((_item, index) => `${index + 6}:00`),
-    //   type: 'category',
-    // },
     xAxis: {
       axisTick: {
         show: false,
       },
       boundaryGap: false,
-      data: Array.from({ length: 18 }).map((_item, index) => `${index + 6}:00`),
+      data: times,
       splitLine: {
         lineStyle: {
           type: 'solid',
@@ -81,7 +98,6 @@ onMounted(() => {
         axisTick: {
           show: false,
         },
-        max: 80_000,
         splitArea: {
           show: true,
         },
