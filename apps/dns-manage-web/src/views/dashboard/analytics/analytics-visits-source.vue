@@ -5,15 +5,37 @@ import { onMounted, ref } from 'vue';
 
 import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
 
+import { getDnsStatRank } from '#/api/dns/task_stat';
+
 const chartRef = ref<EchartsUIType>();
 const { renderEcharts } = useEcharts(chartRef);
 
-onMounted(() => {
+/**
+ * 获取dns域名排行并渲染图表
+ */
+const fetchDnsStatRank = async () => {
+  const res = await getDnsStatRank().catch((error) => {
+    console.error(error);
+    return null;
+  });
+
+  const rawData: Array<{ count: number; name: string }> =
+    (Array.isArray(res) ? res : res?.data) ?? [];
+
+  if (rawData.length === 0) {
+    return;
+  }
+
+  const data = rawData.map((item) => ({
+    name: item.name,
+    value: item.count,
+  }));
+
   renderEcharts({
-    legend: {
-      bottom: '2%',
-      left: 'center',
-    },
+    // legend: {
+    //   bottom: '2%',
+    //   left: 'center',
+    // },
     series: [
       {
         animationDelay() {
@@ -23,12 +45,7 @@ onMounted(() => {
         animationType: 'scale',
         avoidLabelOverlap: false,
         color: ['#5ab1ef', '#b6a2de', '#67e0e3', '#2ec7c9'],
-        data: [
-          { name: 'www.jlcfa.com', value: 1048 },
-          { name: 'www.jlcpcb.com', value: 735 },
-          { name: 'www.jlcke.com', value: 580 },
-          { name: 'www.jlc.com', value: 484 },
-        ],
+        data,
         emphasis: {
           label: {
             fontSize: '12',
@@ -37,18 +54,17 @@ onMounted(() => {
           },
         },
         itemStyle: {
-          // borderColor: '#fff',
           borderRadius: 10,
           borderWidth: 2,
         },
         label: {
-          position: 'center',
-          show: false,
+          position: 'outside',
+          show: true,
         },
         labelLine: {
-          show: false,
+          show: true,
         },
-        name: '访问来源',
+        name: '域名解析记录数',
         radius: ['40%', '65%'],
         type: 'pie',
       },
@@ -57,6 +73,10 @@ onMounted(() => {
       trigger: 'item',
     },
   });
+};
+
+onMounted(() => {
+  fetchDnsStatRank();
 });
 </script>
 

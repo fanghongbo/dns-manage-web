@@ -29,6 +29,9 @@ export namespace DnsStatApi {
   export interface DnsTypeTrend {
     [key: string]: any;
   }
+  export interface DnsStatRank {
+    [key: string]: any;
+  }
 }
 
 /**
@@ -63,9 +66,17 @@ async function getDnsTypeTrend() {
   return requestClient.get<DnsStatApi.DnsTypeTrend>('/api/v1/dns/type/trend');
 }
 
+/**
+ * 获取dns域名排行
+ */
+async function getDnsStatRank() {
+  return requestClient.get<DnsStatApi.DnsStatRank>('/api/v1/dns/stat/rank');
+}
+
 export {
   getDnsChangeTrend,
   getDnsStatOverview,
+  getDnsStatRank,
   getDnsStatTrend,
   getDnsTypeTrend,
 };
