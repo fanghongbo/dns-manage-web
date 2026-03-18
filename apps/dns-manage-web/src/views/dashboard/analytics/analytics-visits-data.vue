@@ -5,43 +5,49 @@ import { onMounted, ref } from 'vue';
 
 import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
 
+import { getDnsTypeTrend } from '#/api/dns/task_stat';
+
 const chartRef = ref<EchartsUIType>();
 const { renderEcharts } = useEcharts(chartRef);
 
-onMounted(() => {
+/**
+ * 获取dns类型趋势并渲染图表
+ */
+const fetchDnsTypeTrend = async () => {
+  const res = await getDnsTypeTrend().catch((error) => {
+    console.error(error);
+    return null;
+  });
+
+  const rawData: Array<{ count: number; name: string }> =
+    (Array.isArray(res) ? res : res?.data) ?? [];
+
+  const DEFAULT_TYPES = ['A', 'CNAME', 'MX', 'NS', 'TXT', 'SOA'];
+
+  const apiTypes = rawData.map((item) => item.name);
+  const typeSet = new Set<string>([...apiTypes, ...DEFAULT_TYPES]);
+  const types = [...typeSet];
+
+  const values = types.map((type) => {
+    const found = rawData.find((item) => item.name === type);
+    return found ? found.count : 0;
+  });
+
+  const maxValue = values.length > 0 ? Math.max(...values) || 1 : 1;
+
   renderEcharts({
-    legend: {
-      bottom: 0,
-      data: ['www.jlcfa.com', 'www.jlc.com'],
-    },
     radar: {
-      indicator: [
-        {
-          name: 'CNAME',
-        },
-        {
-          name: 'A',
-        },
-        {
-          name: 'SOA',
-        },
-        {
-          name: 'NS',
-        },
-        {
-          name: 'TXT',
-        },
-        {
-          name: 'MX',
-        },
-      ],
+      indicator: types.map((type) => ({
+        name: type,
+        max: maxValue,
+      })),
       radius: '60%',
-      splitNumber: 8,
+      splitNumber: 5,
     },
     series: [
       {
         areaStyle: {
-          opacity: 1,
+          opacity: 0.6,
           shadowBlur: 0,
           shadowColor: 'rgba(0,0,0,.2)',
           shadowOffsetX: 0,
@@ -50,30 +56,26 @@ onMounted(() => {
         data: [
           {
             itemStyle: {
-              color: '#b6a2de',
+              color: '#4f46e5',
             },
-            name: 'www.jlcfa.com',
-            value: [90, 50, 86, 40, 50, 20],
-          },
-          {
-            itemStyle: {
-              color: '#5ab1ef',
-            },
-            name: 'www.jlc.com',
-            value: [70, 75, 70, 76, 20, 85],
+            name: 'DNS记录类型分布',
+            value: values,
           },
         ],
         itemStyle: {
-          // borderColor: '#fff',
           borderRadius: 10,
           borderWidth: 2,
         },
-        symbolSize: 0,
+        symbolSize: 4,
         type: 'radar',
       },
     ],
     tooltip: {},
   });
+};
+
+onMounted(async () => {
+  await fetchDnsTypeTrend();
 });
 </script>
 
