@@ -30,16 +30,16 @@ withDefaults(defineProps<Props>(), {
     <div class="mt-4 flex flex-1 justify-end md:mt-0">
       <div class="flex flex-col justify-center text-right">
         <span class="text-foreground/80"> 待办 </span>
-        <span class="text-2xl">2/10</span>
+        <span class="text-2xl">0/0</span>
       </div>
 
       <div class="mx-12 flex flex-col justify-center text-right md:mx-16">
         <span class="text-foreground/80"> 项目 </span>
-        <span class="text-2xl">8</span>
+        <span class="text-2xl">0</span>
       </div>
       <div class="mr-4 flex flex-col justify-center text-right md:mr-10">
         <span class="text-foreground/80"> 团队 </span>
-        <span class="text-2xl">300</span>
+        <span class="text-2xl">0</span>
       </div>
     </div>
   </div>
