@@ -32,6 +32,9 @@ export namespace DnsStatApi {
   export interface DnsStatRank {
     [key: string]: any;
   }
+  export interface DnsUserRank {
+    [key: string]: any;
+  }
 }
 
 /**
@@ -73,10 +76,18 @@ async function getDnsStatRank() {
   return requestClient.get<DnsStatApi.DnsStatRank>('/api/v1/dns/stat/rank');
 }
 
+/**
+ * 获取dns用户排行
+ */
+async function getDnsUserRank() {
+  return requestClient.get<DnsStatApi.DnsUserRank>('/api/v1/dns/user/rank');
+}
+
 export {
   getDnsChangeTrend,
   getDnsStatOverview,
   getDnsStatRank,
   getDnsStatTrend,
   getDnsTypeTrend,
+  getDnsUserRank,
 };
