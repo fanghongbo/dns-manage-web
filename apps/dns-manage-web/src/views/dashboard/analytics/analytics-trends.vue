@@ -3,6 +3,7 @@ import type { EchartsUIType } from '@vben/plugins/echarts';
 
 import { onMounted, ref } from 'vue';
 
+import { useAccess } from '@vben/access';
 import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
 
 import { getDnsChangeTrend } from '#/api/dns/task_stat';
@@ -10,18 +11,39 @@ import { getDnsChangeTrend } from '#/api/dns/task_stat';
 const chartRef = ref<EchartsUIType>();
 const { renderEcharts } = useEcharts(chartRef);
 
+const { hasAccessByCodes } = useAccess();
+
 onMounted(async () => {
-  const trend = await getDnsChangeTrend();
-  const times: string[] = trend?.times ?? [];
-  const add: number[] = trend?.add ?? [];
-  const update: number[] = trend?.update ?? [];
-  const del: number[] = trend?.delete ?? [];
-  const total: number[] = times.map((_, idx) => {
-    const a = add[idx] ?? 0;
-    const u = update[idx] ?? 0;
-    const d = del[idx] ?? 0;
-    return a + u + d;
-  });
+  let times: string[] = [];
+  let add: number[] = [];
+  let update: number[] = [];
+  let del: number[] = [];
+  let total: number[] = [];
+
+  // 检查是否有overview权限
+  if (hasAccessByCodes(['dashboard.analytics'])) {
+    const trend = await getDnsChangeTrend().catch((error) => {
+      console.error(error);
+      return null;
+    });
+    times = trend?.times ?? [];
+    add = trend?.add ?? [];
+    update = trend?.update ?? [];
+    del = trend?.delete ?? [];
+    total = times.map((_, idx) => {
+      const a = add[idx] ?? 0;
+      const u = update[idx] ?? 0;
+      const d = del[idx] ?? 0;
+      return a + u + d;
+    });
+  } else {
+    // 没有权限的时候，生成空数据（保留 x 轴刻度）
+    times = Array.from({ length: 18 }).map((_item, index) => `${index + 6}:00`);
+    add = Array.from({ length: times.length }, () => 0);
+    update = Array.from({ length: times.length }, () => 0);
+    del = Array.from({ length: times.length }, () => 0);
+    total = Array.from({ length: times.length }, () => 0);
+  }
 
   renderEcharts({
     grid: {

@@ -3,6 +3,7 @@ import type { EchartsUIType } from '@vben/plugins/echarts';
 
 import { onMounted, ref } from 'vue';
 
+import { useAccess } from '@vben/access';
 import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
 
 import { getDnsTypeTrend } from '#/api/dns/task_stat';
@@ -10,23 +11,28 @@ import { getDnsTypeTrend } from '#/api/dns/task_stat';
 const chartRef = ref<EchartsUIType>();
 const { renderEcharts } = useEcharts(chartRef);
 
+const { hasAccessByCodes } = useAccess();
+
 /**
  * 获取dns类型趋势并渲染图表
  */
 const fetchDnsTypeTrend = async () => {
-  const res = await getDnsTypeTrend().catch((error) => {
-    console.error(error);
-    return null;
-  });
-
-  const rawData: Array<{ count: number; name: string }> =
-    (Array.isArray(res) ? res : res?.data) ?? [];
-
   const DEFAULT_TYPES = ['A', 'CNAME', 'MX', 'NS', 'TXT', 'SOA'];
+  let rawData: Array<{ count: number; name: string }> = [];
+  let types: string[] = [...DEFAULT_TYPES];
 
-  const apiTypes = rawData.map((item) => item.name);
-  const typeSet = new Set<string>([...apiTypes, ...DEFAULT_TYPES]);
-  const types = [...typeSet];
+  if (hasAccessByCodes(['dashboard.analytics'])) {
+    const res = await getDnsTypeTrend().catch((error) => {
+      console.error(error);
+      return null;
+    });
+
+    rawData = (Array.isArray(res) ? res : res?.data) ?? [];
+
+    const apiTypes = rawData.map((item) => item.name);
+    const typeSet = new Set<string>([...apiTypes, ...DEFAULT_TYPES]);
+    types = [...typeSet];
+  }
 
   const values = types.map((type) => {
     const found = rawData.find((item) => item.name === type);

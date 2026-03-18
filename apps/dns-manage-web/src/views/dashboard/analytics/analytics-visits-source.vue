@@ -3,6 +3,7 @@ import type { EchartsUIType } from '@vben/plugins/echarts';
 
 import { onMounted, ref } from 'vue';
 
+import { useAccess } from '@vben/access';
 import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
 
 import { getDnsStatRank } from '#/api/dns/task_stat';
@@ -10,26 +11,33 @@ import { getDnsStatRank } from '#/api/dns/task_stat';
 const chartRef = ref<EchartsUIType>();
 const { renderEcharts } = useEcharts(chartRef);
 
+const { hasAccessByCodes } = useAccess();
+
 /**
  * 获取dns域名排行并渲染图表
  */
 const fetchDnsStatRank = async () => {
-  const res = await getDnsStatRank().catch((error) => {
-    console.error(error);
-    return null;
-  });
+  let data: Array<{ name: string; value: number }> = [];
 
-  const rawData: Array<{ count: number; name: string }> =
-    (Array.isArray(res) ? res : res?.data) ?? [];
+  if (hasAccessByCodes(['dashboard.analytics'])) {
+    const res = await getDnsStatRank().catch((error) => {
+      console.error(error);
+      return null;
+    });
 
-  if (rawData.length === 0) {
-    return;
+    const rawData: Array<{ count: number; name: string }> =
+      (Array.isArray(res) ? res : res?.data) ?? [];
+
+    data = rawData.map((item) => ({
+      name: item.name,
+      value: item.count,
+    }));
   }
 
-  const data = rawData.map((item) => ({
-    name: item.name,
-    value: item.count,
-  }));
+  // 无权限/无数据时渲染空图占位
+  if (data.length === 0) {
+    data = [{ name: '暂无数据', value: 0 }];
+  }
 
   renderEcharts({
     // legend: {

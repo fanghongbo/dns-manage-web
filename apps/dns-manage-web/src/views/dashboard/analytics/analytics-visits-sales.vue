@@ -3,6 +3,7 @@ import type { EchartsUIType } from '@vben/plugins/echarts';
 
 import { onMounted, ref } from 'vue';
 
+import { useAccess } from '@vben/access';
 import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
 
 import { getDnsUserRank } from '#/api/dns/task_stat';
@@ -10,20 +11,26 @@ import { getDnsUserRank } from '#/api/dns/task_stat';
 const chartRef = ref<EchartsUIType>();
 const { renderEcharts } = useEcharts(chartRef);
 
+const { hasAccessByCodes } = useAccess();
+
 /**
  * 获取dns用户排行并渲染图表
  */
 const fetchDnsUserRank = async () => {
-  const res = await getDnsUserRank().catch((error) => {
-    console.error(error);
-    return null;
-  });
+  let rawData: Array<{ count: number; name: string }> = [];
 
-  const rawData: Array<{ count: number; name: string }> =
-    (Array.isArray(res) ? res : res?.data) ?? [];
+  if (hasAccessByCodes(['dashboard.analytics'])) {
+    const res = await getDnsUserRank().catch((error) => {
+      console.error(error);
+      return null;
+    });
 
+    rawData = (Array.isArray(res) ? res : res?.data) ?? [];
+  }
+
+  // 无权限/无数据时渲染空图占位
   if (rawData.length === 0) {
-    return;
+    rawData = [{ count: 0, name: '暂无数据' }];
   }
 
   const data = rawData

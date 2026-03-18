@@ -4,6 +4,7 @@ import type { TabOption } from '@vben/types';
 
 import { onMounted, ref } from 'vue';
 
+import { useAccess } from '@vben/access';
 import {
   AnalysisChartCard,
   AnalysisChartsTabs,
@@ -23,6 +24,8 @@ import AnalyticsVisitsData from './analytics-visits-data.vue';
 import AnalyticsVisitsSales from './analytics-visits-sales.vue';
 import AnalyticsVisitsSource from './analytics-visits-source.vue';
 import AnalyticsVisits from './analytics-visits.vue';
+
+const { hasAccessByCodes } = useAccess();
 
 const overviewItems = ref<AnalysisOverviewItem[]>([
   {
@@ -61,9 +64,14 @@ const overviewItems = ref<AnalysisOverviewItem[]>([
 
 onMounted(async () => {
   try {
+    // 检查是否有overview权限
+    if (!hasAccessByCodes(['dashboard.analytics'])) {
+      return;
+    }
+
     const res = await getDnsStatOverview();
-    console.warn(res);
     const [item0, item1, item2, item3] = overviewItems.value;
+
     overviewItems.value = [
       {
         icon: item0!.icon,
