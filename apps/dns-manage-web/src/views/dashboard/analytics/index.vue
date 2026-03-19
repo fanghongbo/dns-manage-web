@@ -2,7 +2,7 @@
 import type { AnalysisOverviewItem } from '@vben/common-ui';
 import type { TabOption } from '@vben/types';
 
-import { onMounted, ref } from 'vue';
+import { markRaw, onMounted, ref } from 'vue';
 
 import { useAccess } from '@vben/access';
 import {
@@ -29,7 +29,7 @@ const { hasAccessByCodes } = useAccess();
 
 const overviewItems = ref<AnalysisOverviewItem[]>([
   {
-    icon: SvgCardIcon,
+    icon: markRaw(SvgCardIcon),
     title: '域名变更数',
     totalTitle: '总域名数',
     totalValue: 0,
@@ -37,7 +37,7 @@ const overviewItems = ref<AnalysisOverviewItem[]>([
     type: 'count',
   },
   {
-    icon: SvgCakeIcon,
+    icon: markRaw(SvgCakeIcon),
     title: 'DNS记录变更数',
     totalTitle: '总DNS变更记录',
     totalValue: 0,
@@ -45,7 +45,7 @@ const overviewItems = ref<AnalysisOverviewItem[]>([
     type: 'count',
   },
   {
-    icon: SvgBellIcon,
+    icon: markRaw(SvgBellIcon),
     title: '本周任务数',
     totalTitle: '总任务数',
     totalValue: 0,
@@ -53,7 +53,7 @@ const overviewItems = ref<AnalysisOverviewItem[]>([
     type: 'count',
   },
   {
-    icon: SvgDownloadIcon,
+    icon: markRaw(SvgDownloadIcon),
     title: '本周任务成功率',
     totalTitle: '总成功率',
     totalValue: 0,

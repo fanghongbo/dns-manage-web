@@ -39,7 +39,8 @@ const fetchDnsTypeTrend = async () => {
     return found ? found.count : 0;
   });
 
-  const maxValue = values.length > 0 ? Math.max(...values) || 1 : 1;
+  // 为了避免 max 太小导致刻度不可读，给 max 设置下限
+  const maxValue = values.length > 0 ? Math.max(...values, 5) : 5;
 
   renderEcharts({
     radar: {
