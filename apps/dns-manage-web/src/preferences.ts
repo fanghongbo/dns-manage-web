@@ -32,6 +32,7 @@ export const overridesPreferences = defineOverridesPreferences({
   widget: {
     sidebarToggle: false,
     timezone: false,
+    lockScreen: false,
   },
   navigation: {
     accordion: false,
