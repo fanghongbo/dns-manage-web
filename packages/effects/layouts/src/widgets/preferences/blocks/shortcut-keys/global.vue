@@ -19,6 +19,9 @@ const shortcutKeysLogout = defineModel<boolean>('shortcutKeysLogout');
 const shortcutKeysLockScreen = defineModel<boolean>('shortcutKeysLockScreen');
 
 const altView = computed(() => (isWindowsOs() ? 'Alt' : '⌥'));
+
+// 永久关闭锁屏：隐藏快捷键入口
+const lockScreenPermanentlyDisabled = true;
 </script>
 
 <template>
@@ -43,7 +46,11 @@ const altView = computed(() => (isWindowsOs() ? 'Alt' : '⌥'));
     {{ $t('preferences.shortcutKeys.preferences') }}
     <template #shortcut> {{ altView }} , </template>
   </SwitchItem> -->
-  <SwitchItem v-model="shortcutKeysLockScreen" :disabled="!shortcutKeysEnable">
+  <SwitchItem
+    v-if="!lockScreenPermanentlyDisabled"
+    v-model="shortcutKeysLockScreen"
+    :disabled="!shortcutKeysEnable"
+  >
     {{ $t('ui.widgets.lockScreen.title') }}
     <template #shortcut> {{ altView }} L </template>
   </SwitchItem>

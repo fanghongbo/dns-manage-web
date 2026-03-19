@@ -129,7 +129,7 @@ const defaultPreferences: Preferences = {
     fullscreen: true,
     globalSearch: true,
     languageToggle: true,
-    lockScreen: true,
+    lockScreen: false,
     notification: true,
     refresh: true,
     sidebarToggle: true,

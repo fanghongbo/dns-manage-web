@@ -28,6 +28,9 @@ defineEmits<{ toLogin: [] }>();
 const { locale } = useI18n();
 const accessStore = useAccessStore();
 
+// 永久关闭锁屏：即使外部意外触发，也不渲染锁屏界面
+const lockScreenPermanentlyDisabled = true;
+
 const now = useNow();
 const meridiem = useDateFormat(now, 'A');
 const hour = useDateFormat(now, 'HH');
@@ -84,11 +87,16 @@ function toggleUnlockForm() {
   }
 }
 
-useScrollLock();
+if (!lockScreenPermanentlyDisabled) {
+  useScrollLock();
+}
 </script>
 
 <template>
-  <div class="bg-background fixed z-[2000] size-full">
+  <div
+    v-if="!lockScreenPermanentlyDisabled"
+    class="bg-background fixed z-[2000] size-full"
+  >
     <transition name="slide-left">
       <div v-show="!showUnlockForm" class="size-full">
         <div

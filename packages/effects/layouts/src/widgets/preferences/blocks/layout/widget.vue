@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SelectOption } from '@vben/types';
 
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 
 import { $t } from '@vben/locales';
 
@@ -23,6 +23,19 @@ const appPreferencesButtonPosition = defineModel<string>(
   'appPreferencesButtonPosition',
 );
 const widgetRefresh = defineModel<boolean>('widgetRefresh');
+
+// 永久关闭锁屏：隐藏偏好设置入口，并强制锁屏为关闭状态
+const lockScreenPermanentlyDisabled = true;
+
+watch(
+  () => lockScreenPermanentlyDisabled,
+  (disabled) => {
+    if (disabled) {
+      widgetLockScreen.value = false;
+    }
+  },
+  { immediate: true },
+);
 
 const positionItems = computed((): SelectOption[] => [
   {
@@ -56,7 +69,10 @@ const positionItems = computed((): SelectOption[] => [
   <SwitchItem v-model="widgetNotification">
     {{ $t('preferences.widget.notification') }}
   </SwitchItem>
-  <SwitchItem v-model="widgetLockScreen">
+  <SwitchItem
+    v-if="!lockScreenPermanentlyDisabled"
+    v-model="widgetLockScreen"
+  >
     {{ $t('preferences.widget.lockScreen') }}
   </SwitchItem>
   <SwitchItem v-model="widgetSidebarToggle">

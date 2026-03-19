@@ -84,6 +84,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{ logout: [] }>();
 
+// 永久关闭锁屏：不展示入口 & 不打开锁屏弹窗
+const lockScreenPermanentlyDisabled = true;
+
 const { globalLockScreenShortcutKey, globalLogoutShortcutKey } =
   usePreferences();
 const accessStore = useAccessStore();
@@ -124,7 +127,11 @@ const enableLogoutShortcutKey = computed(() => {
 });
 
 const enableLockScreenShortcutKey = computed(() => {
-  return props.enableShortcutKey && globalLockScreenShortcutKey.value;
+  return (
+    !lockScreenPermanentlyDisabled &&
+    props.enableShortcutKey &&
+    globalLockScreenShortcutKey.value
+  );
 });
 
 const enableShortcutKey = computed(() => {
@@ -132,6 +139,7 @@ const enableShortcutKey = computed(() => {
 });
 
 function handleOpenLock() {
+  if (lockScreenPermanentlyDisabled) return;
   lockModalApi.open();
 }
 
@@ -169,7 +177,7 @@ if (enableShortcutKey.value) {
 
 <template>
   <LockModal
-    v-if="preferences.widget.lockScreen"
+    v-if="!lockScreenPermanentlyDisabled && preferences.widget.lockScreen"
     :avatar="avatar"
     :text="text"
     @submit="handleSubmitLock"
@@ -235,7 +243,7 @@ if (enableShortcutKey.value) {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          v-if="preferences.widget.lockScreen"
+          v-if="!lockScreenPermanentlyDisabled && preferences.widget.lockScreen"
           class="mx-1 flex cursor-pointer items-center rounded-sm py-1 leading-8"
           @click="handleOpenLock"
         >
@@ -245,7 +253,9 @@ if (enableShortcutKey.value) {
             {{ altView }} L
           </DropdownMenuShortcut>
         </DropdownMenuItem>
-        <DropdownMenuSeparator v-if="preferences.widget.lockScreen" />
+        <DropdownMenuSeparator
+          v-if="!lockScreenPermanentlyDisabled && preferences.widget.lockScreen"
+        />
         <DropdownMenuItem
           class="mx-1 flex cursor-pointer items-center rounded-sm py-1 leading-8"
           @click="handleLogout"

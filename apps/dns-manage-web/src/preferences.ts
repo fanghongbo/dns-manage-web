@@ -34,6 +34,9 @@ export const overridesPreferences = defineOverridesPreferences({
     timezone: false,
     lockScreen: false,
   },
+  shortcutKeys: {
+    globalLockScreen: false,
+  },
   navigation: {
     accordion: false,
   },

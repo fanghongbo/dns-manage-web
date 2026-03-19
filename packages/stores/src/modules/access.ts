@@ -69,9 +69,10 @@ export const useAccessStore = defineStore('core-access', {
       }
       return findMenu(this.accessMenus, path);
     },
-    lockScreen(password: string) {
-      this.isLockScreen = true;
-      this.lockScreenPassword = password;
+    lockScreen(_password: string) {
+      // 永久关闭锁屏功能：不再进入锁屏态
+      this.isLockScreen = false;
+      this.lockScreenPassword = undefined;
     },
     setAccessCodes(codes: string[]) {
       this.accessCodes = codes;
@@ -105,8 +106,6 @@ export const useAccessStore = defineStore('core-access', {
       'accessToken',
       'refreshToken',
       'accessCodes',
-      'isLockScreen',
-      'lockScreenPassword',
     ],
   },
   state: (): AccessState => ({
