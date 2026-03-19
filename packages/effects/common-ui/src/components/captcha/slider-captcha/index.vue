@@ -70,6 +70,16 @@ watchEffect(() => {
   state.isPassing = !!modelValue.value;
 });
 
+watch(
+  () => modelValue.value,
+  (val) => {
+    // 外部把 v-model 置为 false 时，同步重置拖拽 UI
+    if (!val) {
+      resume();
+    }
+  },
+);
+
 function getEventPageX(e: MouseEvent | TouchEvent): number {
   if ('pageX' in e) {
     return e.pageX;

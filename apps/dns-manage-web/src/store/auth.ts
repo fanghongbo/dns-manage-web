@@ -46,6 +46,7 @@ export const useAuthStore = defineStore('auth', () => {
         name: params.username,
         password: encryptDes(params.password, secretKey),
         rememberMe: 'false',
+        passToken: params.passToken,
       };
 
       // 先调用登录接口（返回 data 为空字符串）

@@ -6,6 +6,7 @@ export namespace AuthApi {
     password?: string;
     username?: string;
     rememberMe?: string;
+    passToken?: string;
   }
 
   export interface SecretKeyResult {
@@ -39,6 +40,45 @@ export async function loginApi(params: AuthApi.LoginParams) {
     '/api/v1/user/login',
     {},
     { params },
+  );
+}
+
+export namespace SliderCaptchaApi {
+  export interface SliderChallengeResult {
+    captchaId: string;
+    expiresIn?: number;
+  }
+
+  export interface SliderVerifyParams {
+    captchaId: string;
+    durationMs: number;
+    clientTs?: number;
+  }
+
+  export interface SliderVerifyResult {
+    passToken: string;
+    expiresIn?: number;
+  }
+}
+
+/**
+ * 获取滑块验证码 challenge
+ */
+export async function getSliderCaptchaChallenge() {
+  return requestClient.get<SliderCaptchaApi.SliderChallengeResult>(
+    '/api/v1/auth/slider/challenge',
+  );
+}
+
+/**
+ * 校验滑块验证码，获取 passToken
+ */
+export async function verifySliderCaptcha(
+  params: SliderCaptchaApi.SliderVerifyParams,
+) {
+  return requestClient.post<SliderCaptchaApi.SliderVerifyResult>(
+    '/api/v1/auth/slider/verify',
+    params,
   );
 }
 
