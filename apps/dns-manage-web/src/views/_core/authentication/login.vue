@@ -67,7 +67,6 @@ async function handleSliderSuccess(payload: any) {
     const formApi = loginRef.value?.getFormApi?.();
     formApi?.setFieldValue('passToken', passToken);
   } catch {
-    message.error($t('authentication.verifyRequiredTip'));
     await refreshSliderChallenge();
   }
 }
